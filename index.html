@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Track daily income and expenses with live balance, summaries, and local storage."
+    />
+    <title>Expense Tracker — Modern Finance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#transaction-form">Skip to add transaction</a>
+
+    <div class="page">
+      <header class="site-header">
+        <h1>Expense Tracker</h1>
+        <p class="tagline">Modern tools for modern finance — track income, spending, and balance in one place.</p>
+      </header>
+
+      <main class="phone-grid">
+        <!-- Home: balance + recent activity -->
+        <section class="device home-device" aria-labelledby="home-heading">
+          <div class="device-screen">
+            <div class="home-hero">
+              <div class="status-row">
+                <img class="avatar" src="images/avatar.png" alt="User avatar" />
+                <h2 id="home-heading" class="visually-hidden">Account overview</h2>
+                <div class="icon-actions">
+                  <button type="button" class="icon-btn" aria-label="Notifications" disabled>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <p class="balance-label">Balance</p>
+              <p id="balance-value" class="balance-value">Rs. 0</p>
+              <p id="balance-hint" class="balance-hint">Add income to get started</p>
+
+              <div class="quick-actions">
+                <button type="button" class="pill-btn" data-preset="income">
+                  <span class="pill-icon" aria-hidden="true">↓</span>
+                  Deposit
+                </button>
+                <button type="button" class="pill-btn" data-preset="expense">
+                  <span class="pill-icon" aria-hidden="true">↑</span>
+                  Withdraw
+                </button>
+              </div>
+            </div>
+
+            <div class="sheet">
+              <div class="sheet-head">
+                <h3>Recent Transactions</h3>
+                <div class="sheet-head-actions">
+                  <label class="filter-label">
+                    <span class="visually-hidden">Filter transactions</span>
+                    <select id="filter-select" aria-label="Filter transactions">
+                      <option value="all">All</option>
+                      <option value="income">Income</option>
+                      <option value="expense">Expense</option>
+                    </select>
+                  </label>
+                  <button type="button" id="clear-all-btn" class="clear-all-btn" aria-label="Clear all transactions">Clear All</button>
+                </div>
+              </div>
+              <ul id="transaction-list" class="txn-list" aria-live="polite"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Promo + entry form -->
+        <section class="device promo-device" aria-labelledby="promo-heading">
+          <div class="device-screen promo-screen">
+            <div class="promo-art" aria-hidden="true">
+              <div class="credit-card">
+                <span class="chip"></span>
+                <span class="card-brand">VISA</span>
+              </div>
+            </div>
+            <div class="promo-copy">
+              <h2 id="promo-heading">Modern Tools for Modern Finance</h2>
+              <p>Log deposits and withdrawals, then watch your balance and category mix update instantly.</p>
+            </div>
+
+            <form id="transaction-form" class="txn-form" novalidate>
+              <h3>Add transaction</h3>
+              <p id="form-error" class="form-error" role="alert" hidden></p>
+
+              <label>
+                Description
+                <input
+                  id="description-input"
+                  name="description"
+                  type="text"
+                  maxlength="80"
+                  autocomplete="off"
+                  placeholder="e.g. Office supplies"
+                  required
+                />
+              </label>
+
+              <label>
+                Amount (Rs.)
+                <input
+                  id="amount-input"
+                  name="amount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  inputmode="decimal"
+                  placeholder="0.00"
+                  required
+                />
+              </label>
+
+              <fieldset class="type-fieldset">
+                <legend>Type</legend>
+                <label class="radio-chip">
+                  <input type="radio" name="type" value="income" checked />
+                  Income
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="type" value="expense" />
+                  Expense
+                </label>
+              </fieldset>
+
+              <label>
+                Category
+                <select id="category-input" name="category" aria-label="Transaction category">
+                  <option value="Income">Income</option>
+                  <option value="Groceries">Groceries</option>
+                  <option value="Clothes and Dress">Clothes and Dress</option>
+                  <option value="Food">Food</option>
+                  <option value="Cars and rental">Cars and rental</option>
+                  <option value="Cafes and restaurants">Cafes and restaurants</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+              <label id="other-category-label" hidden>
+                Specify Category
+                <input
+                  id="other-category-input"
+                  name="other-category"
+                  type="text"
+                  maxlength="60"
+                  autocomplete="off"
+                  placeholder="e.g. Medical, Travel…"
+                />
+              </label>
+
+              <button type="submit" class="submit-btn">
+                Add Transaction
+                <span class="submit-arrow" aria-hidden="true">→</span>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- Expense summary -->
+        <section class="device expenses-device" aria-labelledby="expenses-heading">
+          <div class="device-screen expenses-screen">
+            <div class="bubbles" id="category-bubbles" aria-hidden="true"></div>
+
+            <div class="expense-sheet">
+              <div class="sheet-head">
+                <h2 id="expenses-heading">Expenses</h2>
+                <button type="button" class="text-link" id="focus-all-btn">View All</button>
+              </div>
+              <p id="expense-total" class="expense-total">Rs. 0</p>
+              <div class="mini-stats">
+                <div>
+                  <p class="mini-label">Income</p>
+                  <p id="income-total" class="mini-value income">Rs. 0</p>
+                </div>
+                <div>
+                  <p class="mini-label">Clothes and Dress</p>
+                  <p id="top-category-value" class="mini-value">Rs. 0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
